@@ -1,0 +1,4 @@
+Cache inicial (Mateus):
+./sim-cache -cache:il1 il1:256:32:4:l -cache:il2 none -cache:dl1 dl1:256:64:8:l -cache:dl2 none ./benchs_trabalho/mm.ss
+
+
