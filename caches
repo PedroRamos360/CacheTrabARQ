@@ -1,4 +1,14 @@
 Cache inicial (Mateus):
 ./sim-cache -cache:il1 il1:256:32:4:l -cache:il2 none -cache:dl1 dl1:256:64:8:l -cache:dl2 none ./benchs_trabalho/mm.ss
 
+Cache otimizada para multiplicação de matrizes (128 bytes)
+(melhor):
+./sim-cache -cache:il1 il1:16:8:8:l -cache:il2 none -cache:dl1 dl1:16:8:8:l -cache:dl2 none ./benchs_trabalho/mm.ss
 
+(pior):
+./sim-cache -cache:il1 il1:1:128:1:l -cache:il2 none -cache:dl1 dl1:1:128:1:l -cache:dl2 none ./benchs_trabalho/mm.ss
+
+
+il1 (instruction cache): Stores the instructions for the processor to execute, it's goal is to save time from the processor when fetching instructions from the memory
+
+dl1 (data cache): Stores data accessed from the program being executed, holds variables arrays and intermediate calculation results, improve speed by saving time from accessing the memory
