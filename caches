@@ -1,11 +1,15 @@
-Cache inicial (Mateus):
-./sim-cache -cache:il1 il1:256:32:4:l -cache:il2 none -cache:dl1 dl1:256:64:8:l -cache:dl2 none ./benchs_trabalho/mm.ss
-
-Cache otimizada para multiplicação de matrizes (1kb):
+Cache otimizada para mm.ss (1kb):
 
 ./sim-cache -cache:il1 il1:1:256:4:l -cache:il2 none -cache:dl1 dl1:4:64:4:l -cache:dl2 none -max:inst 10000000 ./benchs_trabalho/mm.ss
 
-Cache otimizada para 
+Cache otimizada para basicmath.ss (1kb):
+
+./sim-cache -cache:il1 il1:1:1024:1:l -cache:il2 none -cache:dl1 dl1:2:64:8:l -cache:dl2 none -max:inst 10000000 ./benchs_trabalho/basicmath.ss
+
+Cache otimizada para amp.ss (1kb):
+
+./sim-cache -cache:il1 il1:2:256:2:l -cache:il2 none -cache:dl1 dl1:1:32:32:l -cache:dl2 none -max:inst 10000000 ./benchs_trabalho/amp.ss
+
 
 
 il1 (instruction cache): Stores the instructions for the processor to execute, it's goal is to save time from the processor when fetching instructions from the memory
