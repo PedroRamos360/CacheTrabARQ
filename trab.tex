@@ -35,7 +35,7 @@ tamanho do bloco em bytes, a associatividade e o algoritmo de substituição.
 Tais parâmetros foram testados por meio de linha de comando, usando o módulo
 "sim-cache" do SimpleScalar, as configurações das caches foram especificadas,
 permitindo a execução das aplicações selecionadas. Para este trabalho foi
-definido o tamanho padrão das caches como 1 kb, para que somente a 
+definido o tamanho padrão das caches como 128 bytes, para que somente a 
 organização dos parâmetros influencie nos resultados e não o tamanho total da cache.
 
 As aplicações utilizadas foram selecionadas com o intuito de abranger 
@@ -60,6 +60,39 @@ Simplescalar como ferramenta de análise e avaliação de arquiteturas de
 computadores.
 
 \section{Metodologia} \label{sec:metodologia}
+Nesta seção, será descrito em detalhes a metodologia utilizada para realizar a avaliação comparativa de desempenho das caches montadas no Simplescalar. Serão abordados os passos desde a configuração das caches até a coleta e análise dos resultados.
+
+\subsection{Configuração das Caches}
+Neste estudo, foi utilizado o simulador Simplescalar "sim-cache" para modelar e simular as caches. Foram configuradas quatro caches de dados e instruções de nível 1, variando os seguintes parâmetros: número total de conjuntos (\textless nsets\textgreater), tamanho do bloco em bytes (\textless bsize\textgreater), associatividade (\textless assoc\textgreater) e algoritmo de substituição (\textless repl\textgreater). Cada cache foi otimizada para uma aplicação específica, enquanto uma cache adicional foi projetada para fornecer a melhor otimização média.
+
+As configurações das caches foram definidas da seguinte forma:
+
+\textbf{Cache 1 (Otimizada para a aplicação "mm.ss"):}
+\begin{itemize}
+\item Cache de instruções: il1:256:32:4:l
+\item Cache de dados: dl1:256:64:8:l
+\end{itemize}
+
+\textbf{Cache 2 (Otimizada para a aplicação "amp.ss"):}
+\begin{itemize}
+\item Cache de instruções: il1:256:32:4:l
+\item Cache de dados: dl1:256:64:8:l
+\end{itemize}
+
+\textbf{Cache 3 (Otimizada para a aplicação "basicmath.ss"):}
+\begin{itemize}
+\item Cache de instruções: il1:256:32:4:l
+\item Cache de dados: dl1:256:64:8:l
+\end{itemize}
+
+\textbf{Cache 4 (Melhor otimização média):}
+\begin{itemize}
+\item Cache de instruções: il1:256:32:4:l
+\item Cache de dados: dl1:256:64:8:l
+\end{itemize}
+
+Cada configuração de cache foi projetada para atender às demandas específicas de uma determinada aplicação, considerando o tamanho dos conjuntos, o tamanho do bloco e a associatividade. O algoritmo de substituição utilizado foi o LRU (Least Recently Used) para todas as caches.
+
 
 \section{Resultados} \label{sec:resultados}
 

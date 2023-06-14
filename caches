@@ -3,7 +3,7 @@ Cache inicial (Mateus):
 
 Cache otimizada para multiplicação de matrizes (1kb):
 
-./sim-cache -cache:il1 il1:1:256:4:l -cache:il2 none -cache:dl1 dl1:4:64:4:l -cache:dl2 none ./benchs_trabalho/mm.ss
+./sim-cache -cache:il1 il1:1:256:4:l -cache:il2 none -cache:dl1 dl1:4:64:4:l -cache:dl2 none -max:inst 10000000 ./benchs_trabalho/mm.ss
 
 Cache otimizada para 
 
@@ -28,4 +28,9 @@ Direct map operation:
 - If it is (hit) it uses the offset to find which byte from the block it is looking for
 
 Cash trashing: In direct mapped cache only one block is stored per line so if two blocks need to be stored in that line and are being used at the same time it keeps trowing away the data an causing misses.
+
+
+The working set: the set of bytes that were used recently
+
+However, it's important to note that the primary advantage of higher associativity is reducing conflicts within a set, while the advantage of a higher number of sets is reducing index contention.	
 
