@@ -1,14 +1,31 @@
 Cache inicial (Mateus):
 ./sim-cache -cache:il1 il1:256:32:4:l -cache:il2 none -cache:dl1 dl1:256:64:8:l -cache:dl2 none ./benchs_trabalho/mm.ss
 
-Cache otimizada para multiplicação de matrizes (128 bytes)
-(melhor):
-./sim-cache -cache:il1 il1:16:8:8:l -cache:il2 none -cache:dl1 dl1:16:8:8:l -cache:dl2 none ./benchs_trabalho/mm.ss
+Cache otimizada para multiplicação de matrizes (1kb):
 
-(pior):
-./sim-cache -cache:il1 il1:1:128:1:l -cache:il2 none -cache:dl1 dl1:1:128:1:l -cache:dl2 none ./benchs_trabalho/mm.ss
+./sim-cache -cache:il1 il1:1:256:4:l -cache:il2 none -cache:dl1 dl1:4:64:4:l -cache:dl2 none ./benchs_trabalho/mm.ss
+
+Cache otimizada para 
 
 
 il1 (instruction cache): Stores the instructions for the processor to execute, it's goal is to save time from the processor when fetching instructions from the memory
 
 dl1 (data cache): Stores data accessed from the program being executed, holds variables arrays and intermediate calculation results, improve speed by saving time from accessing the memory
+
+<nsets>: Total number of sets. More unique blocks of data. Increasing reduces chance of cache conflicts.
+<bsize>: Block size in bytes. Amount of data that is fetched from the memory in a single cache block. Improves spacial locality.
+<assoc>: The associativity.
+<repl>: The replacemente algorithm.
+
+Fully Associative Memory: Any block can go into any cache line
+Direct mapped cache: Associativty = 1, each set can hold only one block.
+
+Direct map operation:
+- Receives address from cpu
+- Extracts tag, index, offset
+- Goes to the line named by the index
+- Checks if the tag is the one it is looking for
+- If it is (hit) it uses the offset to find which byte from the block it is looking for
+
+Cash trashing: In direct mapped cache only one block is stored per line so if two blocks need to be stored in that line and are being used at the same time it keeps trowing away the data an causing misses.
+
