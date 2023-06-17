@@ -5,6 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
 \usepackage{indentfirst}
+\usepackage{pgfplots}
 
      
 \sloppy
@@ -35,7 +36,7 @@ tamanho do bloco em bytes, a associatividade e o algoritmo de substituição.
 Tais parâmetros foram testados por meio de linha de comando, usando o módulo
 "sim-cache" do SimpleScalar, as configurações das caches foram especificadas,
 permitindo a execução das aplicações selecionadas. Para este trabalho foi
-definido o tamanho padrão das caches como 128 bytes, para que somente a 
+definido o tamanho padrão das caches como 1 kilobyte, para que somente a 
 organização dos parâmetros influencie nos resultados e não o tamanho total da cache.
 
 As aplicações utilizadas foram selecionadas com o intuito de abranger 
@@ -69,32 +70,153 @@ As configurações das caches foram definidas da seguinte forma:
 
 \textbf{Cache 1 (Otimizada para a aplicação "mm.ss"):}
 \begin{itemize}
-\item Cache de instruções: il1:256:32:4:l
-\item Cache de dados: dl1:256:64:8:l
+\item Cache de instruções: il1:1:256:4:l
+\item Cache de dados: dl1:2:64:8:l
 \end{itemize}
 
-\textbf{Cache 2 (Otimizada para a aplicação "amp.ss"):}
+\textbf{Cache 2 (Otimizada para a aplicação "basicmath.ss"):}
 \begin{itemize}
-\item Cache de instruções: il1:256:32:4:l
-\item Cache de dados: dl1:256:64:8:l
+\item Cache de instruções: il1:1:1024:1:l
+\item Cache de dados: dl1:4:32:8:l
 \end{itemize}
 
-\textbf{Cache 3 (Otimizada para a aplicação "basicmath.ss"):}
+\textbf{Cache 3 (Otimizada para a aplicação "amp.ss"):}
 \begin{itemize}
-\item Cache de instruções: il1:256:32:4:l
-\item Cache de dados: dl1:256:64:8:l
+\item Cache de instruções: il1:2:256:2:l
+\item Cache de dados: dl1:1:32:32:l
 \end{itemize}
 
 \textbf{Cache 4 (Melhor otimização média):}
 \begin{itemize}
-\item Cache de instruções: il1:256:32:4:l
-\item Cache de dados: dl1:256:64:8:l
+\item Cache de instruções: il1:2:256:2:l
+\item Cache de dados: dl1:2:32:16:l
 \end{itemize}
 
-Cada configuração de cache foi projetada para atender às demandas específicas de uma determinada aplicação, considerando o tamanho dos conjuntos, o tamanho do bloco e a associatividade. O algoritmo de substituição utilizado foi o LRU (Least Recently Used) para todas as caches.
+Cada configuração de cache foi projetada para atender às demandas específicas de uma determinada aplicação, considerando o tamanho dos conjuntos, o tamanho do bloco e a associatividade. Como o objetivo do trabalho é encontrar as caches mais otimizadas para cada aplicação o algoritmo de substituição utilizado foi o LRU (Least Recently Used) para todas as caches visto que tanto o FIFO (First In First Out) e o Random aproveitam de forma menos eficiente a localidade temporal das aplicações.
+
+Para encontrar a cache de maior otimização média foi analisado quais atributos mais influenciavam no desempenho de cada uma das caches e foi usado o valor que era mais encontrado nas caches. Por exemplo, na cache de instruções, para o tamanho do bloco foi usado 256 bytes porque era usado tanto na aplicação mm.ss quanto na amp.ss. Em seguida esses valores iniciais deduzidos a partir de uma aproximação de uma média foram testados para testar se realmente eram  coerentes com a realidade até que foi encontrado a cache mais balanceada para as 3 aplicações.
 
 
 \section{Resultados} \label{sec:resultados}
+A análise comparativa do desempenho das quatro caches de dados e instruções foi realizada com base nos dados coletados durante a execução das aplicações de teste. Foram avaliados o número de acertos (hits), o número de faltas (misses) tanto da cache de dados quanto a de instruções.
+
+
+\subsection{Gráficos}
+Nas Figuras 1, 2 e 3, são apresentados os resultados obtidos para cada aplicação específica: "mm.ss", "basicmath.ss" e "amp.ss", respectivamente. Cada figura mostra a performance das quatro caches em relação aos hits e misses nas caches de instruções (il1) e de dados (dl1).
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      symbolic x coords={Cache 1, Cache 2, Cache 3, Cache 4},
+      xtick=data,
+      width=15cm,
+      height=6cm,
+      ymin=0,
+      ymode=log, 
+      log basis y=10, 
+      log ticks with fixed point, 
+      legend style={
+      at={(0.5,-0.2)},
+      anchor=north,
+      legend columns=-1,
+      /tikz/every even column/.append style={column sep=0.5cm}
+      }
+    ]
+    \addplot coordinates {(Cache 1, 7702333) (Cache 2, 7437067) (Cache 3, 7702312) (Cache 4, 7702312)};
+    \addplot coordinates {(Cache 1, 295) (Cache 2, 265561) (Cache 3, 316) (Cache 4, 316)};
+    \addplot coordinates {(Cache 1, 908872) (Cache 2, 908881) (Cache 3, 900682) (Cache 4, 900682)};
+    \addplot coordinates {(Cache 1, 135679) (Cache 2, 143880) (Cache 3, 143878) (Cache 4, 143878)};
+    \legend{Hits (il1), Misses (il1), Hits (dl1), Misses (dl1)}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Performance na aplicação mm.ss}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      symbolic x coords={Cache 1, Cache 2, Cache 3, Cache 4},
+      xtick=data,
+      width=15cm,
+      ymode=log, 
+      log basis y=10, 
+      log ticks with fixed point, 
+      height=6cm,
+      ymin=0,
+      legend style={
+        at={(0.5,-0.2)},
+        anchor=north,
+        legend columns=-1,
+        /tikz/every even column/.append style={column sep=0.5cm}
+      }
+    ]
+    \addplot coordinates {(Cache 1, 9374340) (Cache 2, 9496019) (Cache 3, 9371725) (Cache 4, 9371725)};
+    \addplot coordinates {(Cache 1, 625660) (Cache 2, 503981) (Cache 3, 628275) (Cache 4, 628275)};
+    \addplot coordinates {(Cache 1, 2532547) (Cache 2, 2554209) (Cache 3, 2558893) (Cache 4, 2560148)};
+    \addplot coordinates {(Cache 1, 78033) (Cache 2, 70932) (Cache 3, 73349) (Cache 4, 72094)};
+    \legend{Hits (il1), Misses (il1), Hits (dl1), Misses (dl1)}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Performance na aplicação basicmath.ss}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      symbolic x coords={Cache 1, Cache 2, Cache 3, Cache 4},
+      xtick=data,
+      width=15cm,
+      height=6cm,
+      ymode=log, 
+      log basis y=10, 
+      log ticks with fixed point, 
+      ymin=0,
+      legend style={
+        at={(0.5,-0.2)},
+        anchor=north,
+        legend columns=-1,
+        /tikz/every even column/.append style={column sep=0.5cm}
+      }
+    ]
+    \addplot coordinates {(Cache 1, 9385213) (Cache 2, 9416230) (Cache 3, 9492157) (Cache 4, 9492157)};
+    \addplot coordinates {(Cache 1, 614787) (Cache 2, 583770) (Cache 3, 507843) (Cache 4, 507843)};
+    \addplot coordinates {(Cache 1, 3155763) (Cache 2, 3157216) (Cache 3, 3227008) (Cache 4, 3226865)};
+    \addplot coordinates {(Cache 1, 96125) (Cache 2, 32848) (Cache 3, 26333) (Cache 4, 26476)};
+    \legend{Hits (il1), Misses (il1), Hits (dl1), Misses (dl1)}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Performance na aplicação amp.ss}
+\end{figure}
+    
+\subsection{Explicação dos resultados}
+
+\textbf{Cache 1:} 
+A multiplicação de matrizes geralmente envolve acessar elementos das matrizes de forma sequencial. Essa operação exibe uma boa localidade espacial, pois acessa locais de memória contíguos. Além disso, a multiplicação de matrizes envolve cálculos repetitivos nos mesmos dados, resultando em uma boa localidade temporal.
+
+Dessa forma nessa cache foi usado o maior tamanho de bloco de todas aplicações em sua cache de dados, 64 bytes. Como a multiplicação de matrizes também envolve boa localidade temporal foi usado uma associatividade de 8 bytes para acomodar essa necessidade. A multiplicação de matrizes envolve acessar elementos de diferentes linhas e colunas em um padrão específico. Ao armazenar mais elementos da mesma linha ou coluna juntos, uma maior associatividade permite uma melhor acomodação da localidade espacial presente na multiplicação de matrizes do que um maior número de conjuntos, portanto o número de conjuntos escolhido foi de apenas 2 bytes.
+
+Embora a aplicação possa haver algumas declarações condicionais dentro dos loops, como verificações de limite ou condições de término, o número geral de ramificações na multiplicação de matrizes é geralmente menor em comparação com aplicativos com fluxo de controle mais complexo. Dessa forma o tamanho de bloco mais efeitivo para a cache de instruções foi de 256 bytes, que explora bem a localidade espacial da aplicação mas ainda assim deixa espaço para para uma associatividade de 4 bytes, permitindo armazenar um número moderado de instruções de branch juntamente com seus respectivos destinos.
+
+\textbf{Cache 2:}
+Realizar cálculos matemáticos simples envolve manipular valores individuais ou pequenos conjuntos de dados. As operações de resolver funções cúbicas ou converter ângulos, não apresentam uma localidade espacial ou temporal forte. Os dados acessados podem estar dispersos pela memória, levando a uma menor localidade espacial. Além disso, como cada cálculo é independente, pode não haver uma localidade temporal significativa também. Portanto, basicmath.ss provavelmente terá uma localidade espacial e temporal menor em comparação com as outras aplicações para sua cache de dados.
+
+Com isso foi usado um tamanho de bloco de 32 bytes para a cache de dados, um número menor do que na cache 1, e foi mais valorizado os aspectos de número de conjuntos e associatividade. Algumas operações matemáticas envolvem algoritmos iterativos ou recursivos, nos quais os resultados de cálculos anteriores são reutilizados nas etapas subsequentes. Com uma associatividade maior, os dados necessários para esses cálculos podem permanecer na cache por períodos mais longos, facilitando a reutilização eficiente de dados. Dessa forma a associatividade para a cache de dados da cache 2 foi de 8 bytes, para ajudar a evitar conflitos dentro dos conjuntos, e o número de conjuntos foi de 4 bytes, para ajudar a evitar contenções de índices.
+
+Cálculos matemáticos simples, geralmente não contém muitas ramificações. Portanto, é esperado que basicmath.ss tenha um número relativamente menor de ramificações em comparação com os outros aplicativos.
+
+
+\textbf{Cache 3:}
+(Contexto da cache de dados)
+Decodificar um arquivo MPEG envolve ler e processar dados de áudio. Embora possa haver algum acesso sequencial aos dados, a decodificação de áudio também envolve acessar partes diferentes do arquivo de forma não linear devido às técnicas de compressão. Isso pode reduzir a localidade espacial em certa medida. No entanto, como os dados de áudio geralmente são processados em pequenos trechos, pode haver uma boa localidade temporal, pois os mesmos dados podem ser acessados várias vezes durante a decodificação. Em geral, amp.ss pode ter uma localidade espacial moderada, mas uma boa localidade temporal para suas caches de instrução e dados.
+
+(Contexto da cache de instruções)
+A decodificação de um arquivo MPEG envolve analisar os dados de áudio comprimidos, o que pode envolver fluxo de controle complexo. A compressão MPEG usa várias técnicas, como codificação de comprimento variável, quantização e codificação de entropia, que podem levar a um grande número de ramificações. Além disso, a decodificação de áudio pode envolver tratamento de erros, sincronização e operações de busca que podem introduzir ramificações adicionais. Portanto, é provável que amp.ss tenha um número relativamente maior de ramificações em comparação com a multiplicação de matrizes.
+
 
 \end{document}
 

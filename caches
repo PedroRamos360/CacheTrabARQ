@@ -1,14 +1,100 @@
 Cache otimizada para mm.ss (1kb):
 
-./sim-cache -cache:il1 il1:1:256:4:l -cache:il2 none -cache:dl1 dl1:4:64:4:l -cache:dl2 none -max:inst 10000000 ./benchs_trabalho/mm.ss
+./sim-cache -cache:il1 il1:1:256:4:l -cache:il2 none -cache:dl1 dl1:2:64:8:l -cache:dl2 none -max:inst 10000000 ./benchs_trabalho/mm.ss
 
 Cache otimizada para basicmath.ss (1kb):
 
-./sim-cache -cache:il1 il1:1:1024:1:l -cache:il2 none -cache:dl1 dl1:2:64:8:l -cache:dl2 none -max:inst 10000000 ./benchs_trabalho/basicmath.ss
+./sim-cache -cache:il1 il1:1:1024:1:l -cache:il2 none -cache:dl1 dl1:4:32:8:l -cache:dl2 none -max:inst 10000000 ./benchs_trabalho/basicmath.ss
 
 Cache otimizada para amp.ss (1kb):
 
 ./sim-cache -cache:il1 il1:2:256:2:l -cache:il2 none -cache:dl1 dl1:1:32:32:l -cache:dl2 none -max:inst 10000000 ./benchs_trabalho/amp.ss
+
+Cache com melhor otimização média (1kb):
+
+./sim-cache -cache:il1 il1:2:256:2:l -cache:il2 none -cache:dl1 dl1:2:32:16:l -cache:dl2 none -max:inst 10000000 ./benchs_trabalho/
+# Parece como uma das melhores combinações, pode ser que precise de mais otimizações mas é um bom início
+
+
+
+Performance das caches:
+Cache 1 in application mm.ss:
+il1.hits                    7702333
+il1.misses                      295
+dl1.hits                     908872
+dl1.misses                   135679
+
+Cache 1 in application basicmath.ss
+il1.hits                    9374340
+il1.misses                   625660
+dl1.hits                    2532547
+dl1.misses                    78033
+
+Cache 1 in application amp.ss
+il1.hits                    9385213 
+il1.misses                   614787 
+dl1.hits                    3155763 
+dl1.misses                    96125
+
+Cache 2 in application mm.ss
+il1.hits                    7437067 # total number of hits
+il1.misses                   265561 # total number of misses
+dl1.hits                     908881 # total number of hits
+dl1.misses                   143880 # total number of misses
+
+Cache 2 in application basicmath.ss
+il1.hits                    9496019 # total number of hits
+il1.misses                   503981 # total number of misses
+dl1.hits                    2554209 # total number of hits
+dl1.misses                    70932 # total number of misses
+
+Cache 2 in application amp.ss
+il1.hits                    9416230 # total number of hits
+il1.misses                   583770 # total number of misses
+dl1.hits                    3157216 # total number of hits
+dl1.misses                    32848 # total number of misses
+
+Cache 3 in application mm.ss
+il1.hits                    7702312 # total number of hits
+il1.misses                      316 # total number of misses
+dl1.hits                     900682 # total number of hits
+dl1.misses                   143878 # total number of misses
+
+Cache 3 in application basicmath.ss
+il1.hits                    9371725 # total number of hits
+il1.misses                   628275 # total number of misses
+dl1.hits                    2558893 # total number of hits
+dl1.misses                    73349 # total number of misses
+
+Cache 3 in application amp.ss
+il1.hits                    9492157 # total number of hits
+il1.misses                   507843 # total number of misses
+dl1.hits                    3227008 # total number of hits
+dl1.misses                    26333 # total number of misses
+
+Cache 4 in application mm.ss
+il1.hits                    7702312 # total number of hits
+il1.misses                      316 # total number of misses
+dl1.hits                     900682 # total number of hits
+dl1.misses                   143878 # total number of misses
+
+
+Cache 4 in application basicmath.ss
+il1.hits                    9371725 # total number of hits
+il1.misses                   628275 # total number of misses
+dl1.hits                    2560148 # total number of hits
+dl1.misses                    72094 # total number of misses
+
+
+Cache 4 in application amp.ss
+il1.hits                    9492157 # total number of hits
+il1.misses                   507843 # total number of misses
+dl1.hits                    3226865 # total number of hits
+dl1.misses                    26476 # total number of misses
+
+
+
+
 
 
 
