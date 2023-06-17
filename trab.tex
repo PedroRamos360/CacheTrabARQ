@@ -207,11 +207,9 @@ Realizar cálculos matemáticos simples envolve manipular valores individuais ou
 
 Com isso foi usado um tamanho de bloco de 32 bytes para a cache de dados, um número menor do que na cache 1, e foi mais valorizado os aspectos de número de conjuntos e associatividade. Algumas operações matemáticas envolvem algoritmos iterativos ou recursivos, nos quais os resultados de cálculos anteriores são reutilizados nas etapas subsequentes. Com uma associatividade maior, os dados necessários para esses cálculos podem permanecer na cache por períodos mais longos, facilitando a reutilização eficiente de dados. Dessa forma a associatividade para a cache de dados da cache 2 foi de 8 bytes, para ajudar a evitar conflitos dentro dos conjuntos, e o número de conjuntos foi de 4 bytes, para ajudar a evitar contenções de índices.
 
-Cálculos matemáticos simples, geralmente não contém muitas ramificações. Portanto, é esperado que basicmath.ss tenha um número relativamente menor de ramificações em comparação com os outros aplicativos.
-
+Cálculos matemáticos simples, geralmente não contém muitas ramificações, é esperado que basicmath.ss tenha um número relativamente menor de ramificações em comparação com as outras aplicações. Dessa forma a maior performance foi observado usando uma cache de instruções com valor máximo possível, dentro do limite de 1 kilobyte, de tamanho de bloco. Tendo menos ramificações a aplicação itera quase que linearmente pelas instruções, o que gera uma grande localidade espacial, que fica bem aproveitada por grandes tamanhos de bloco.
 
 \textbf{Cache 3:}
-(Contexto da cache de dados)
 Decodificar um arquivo MPEG envolve ler e processar dados de áudio. Embora possa haver algum acesso sequencial aos dados, a decodificação de áudio também envolve acessar partes diferentes do arquivo de forma não linear devido às técnicas de compressão. Isso pode reduzir a localidade espacial em certa medida. No entanto, como os dados de áudio geralmente são processados em pequenos trechos, pode haver uma boa localidade temporal, pois os mesmos dados podem ser acessados várias vezes durante a decodificação. Em geral, amp.ss pode ter uma localidade espacial moderada, mas uma boa localidade temporal para suas caches de instrução e dados.
 
 (Contexto da cache de instruções)
